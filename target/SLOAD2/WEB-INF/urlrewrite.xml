@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 2.6//EN"
+        "http://tuckey.org/res/dtds/urlrewrite2.6.dtd">
+<urlrewrite>
+    <rule>
+        <from>^/homepage$</from>
+        <to>/index.html</to>
+    </rule>
+    <rule>
+        <from>^/result$</from>
+        <to>/result.html</to>
+    </rule>
+    <rule>
+        <from>^/contact$</from>
+        <to>/contact.html</to>
+    </rule>
+    <rule>
+        <from>^/analysis$</from>
+        <to>/analysis.html</to>
+    </rule>
+    <rule>
+        <from>^/tutorial$</from>
+        <to>/tutorial.html</to>
+    </rule>
+</urlrewrite>

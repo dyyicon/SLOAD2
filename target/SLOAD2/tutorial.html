@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>tutorial</title>
+    <page>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="js/jquery-3.2.1.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="js/bootstrap.min.js"></script>
+        <style>
+            .carousel-control {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                width: 15%;
+                font-size: 20px;
+                background: none;
+                border: none;
+                text-align: center;
+
+
+                filter: alpha(opacity=50);
+                opacity: .5;
+            }
+
+            .carousel-control.left {
+                background-image: none;
+                background-repeat: repeat-x;
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#80000000', endColorstr='#00000000', GradientType=1)
+            }
+
+            .carousel-control.right {
+                left: auto;
+                right: 0;
+                background-image: none;
+                background-repeat: repeat-x;
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#80000000', GradientType=1)
+            }
+
+
+            #search-text {
+                width: 200px;
+            }
+
+            .panel-body {
+                margin-top: 50px;
+                padding-top: 0px;
+                height: 200px;
+                width: 100%;
+            }
+
+            p.big {
+                text-indent: 50px;
+                line-height: 1.8;
+                font-size: 18px;
+                text-align: justify;
+            }
+
+            li {
+
+                text-align: center;
+
+                font-size: 20px;
+            }
+
+            #cu {
+                width: 150px;
+            }
+
+            .navbar-nav {
+
+            }
+        </style>
+    </page>
+</head>
+<body>
+<header class="container-fluid">
+    <!--导航栏-->
+    <div class="row" style="height: 50px">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <!-- 定义汉堡按钮 -->
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand " style="margin-left: 50px" href="homepage">SLOAD 2</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right" id="">
+                        <li style="margin-left: 20px"><a href="result">Result<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li style=""><a href="analysis">Analysis</a></li>
+                        <li style="" class="active"><a href="#">Tutorial</a></li>
+                        <li style=""><a href="http://www.tmliang.cn/SL">SLOAD1</a></li>
+                        <li style=" margin-right: 100px"><a href="contact">Contact Us</a></li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+    </div>
+</header>
+
+<div class="container" style="padding-top: 50px">
+    <div>
+        <div style="background-color: white;color: black; font-weight:normal;font-style:normal;">
+            <div style="background-color:white;color: black; font-weight:normal;font-style:normal;">
+                <p style="font-size: 24px;color: black;text-align:left;margin-top:0px;">
+                    <strong>1. Technical means of SLOAD2</strong>
+                </p>
+            </div>
+            <div style="color:black;text-align:left;margin-top:0px;font-size:19px;">
+                <p>We use <i>Java</i> to write the underlying code, <i>HTML5</i> for front-end page design; SLOAD2 is
+                    based on the <i>MySQL</i> database running on the cloud server.
+                </p>
+            </div>
+        </div>
+    </div>
+    <hr style="border-color:#D9D9D9;margin-top:30px;">
+    <div>
+        <div style="background-color: white;color: black; font-weight:normal;font-style:normal;">
+            <div style="background-color:white;color: black; font-weight:normal;font-style:normal;">
+                <p style="font-size: 24px;color: black;text-align:left;margin-top:0px;">
+                    <strong>2. The results provided by SLOAD2</strong>
+                </p>
+            </div>
+            <div style="color:black;text-align:left;margin-top:0px;font-size:19px;">
+                <p>More than 100,000 gene pairs with synthetic lethal effects were predicted in 31 cancer types,
+                    achieving a mean AUC of 0.82. This high quality combination of genes with synthetic lethal effects
+                    can provide more reliable drug targets.
+                </p>
+            </div>
+        </div>
+        <div align="center"><img src="img/t1.png" width="70%" style="display: block;margin-top:20px;"></div>
+
+    </div>
+    <hr style="border-color:#D9D9D9;margin-top:30px;">
+    <div>
+        <div style="background-color: white;color: black; font-weight:normal;font-style:normal;">
+            <div style="background-color:white;color: black; font-weight:normal;font-style:normal;">
+                <p style="font-size: 24px;color: black;text-align:left;margin-top:0px;">
+                    <strong>3. Methods of data analysis</strong>
+                </p>
+            </div>
+            <div style="color:black;text-align:left;margin-top:0px;">
+                <p style="font-size: 20px;color: black;text-align:left;margin-top:0px;">
+                    <strong>3.1 Genetic mutations</strong>
+                </p>
+                <p style="font-size:19px;">
+                    Based on the potential role of gene mutation in the synthetic lethal effect, we first analyzed the
+                    gene mutation rate in 33 cancers.The mutation rate of pairs of genes is the percentage of the
+                    samples where the combination of genes was mutated in each cancer.The results show that there are
+                    differences in mutation rates of genes in different cancers, and there are also differences in
+                    mutation rates of different genes in the same cancer.
+                </p>
+            </div>
+            <div style="color:black;text-align:left;margin-top:0px;">
+                <p style="font-size: 20px;color: black;text-align:left;margin-top:0px;">
+                    <strong>3.2 Differential Analysis</strong>
+                </p>
+                <p style="font-size:19px;">
+                    <i>LogFC</i> and <i>Padj</i> were calculated using EdgeR packages based on mRNA expression data from
+                    different cancer types (only data containing controls were analyzed).
+                    The number of paracancer samples in TCGA database is small, and some cancer types lack paracancer
+                    samples. In order to obtain more accurate characteristic values, the combined TCGA and GTEX data
+                    provided by XENA database are used for differential expression analysis.Some results are shown
+                    behind.
+                </p>
+            </div>
+        </div>
+        <div align="center"><img src="img/t2.jpg" width="60%" style="display: block;margin-top:20px;"></div>
+    </div>
+</div>
+</body>
+</html>

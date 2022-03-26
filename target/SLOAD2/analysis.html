@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>analysis</title>
+    <page>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="js/jquery-3.2.1.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="js/bootstrap.min.js"></script>
+       
+        <style>
+            .carousel-control {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                width: 15%;
+                font-size: 20px;
+                background: none;
+                border: none;
+                text-align: center;
+
+
+                filter: alpha(opacity=50);
+                opacity: .5;
+            }
+
+            .carousel-control.left {
+                background-image: none;
+                background-repeat: repeat-x;
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#80000000', endColorstr='#00000000', GradientType=1)
+            }
+
+            .carousel-control.right {
+                left: auto;
+                right: 0;
+                background-image: none;
+                background-repeat: repeat-x;
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#80000000', GradientType=1)
+            }
+
+
+            #search-text {
+                width: 200px;
+            }
+
+            .panel-body {
+                margin-top: 50px;
+                padding-top: 0px;
+                height: 200px;
+                width: 100%;
+            }
+
+            p.big {
+                text-indent: 50px;
+                line-height: 1.8;
+                font-size: 18px;
+                text-align: justify;
+            }
+
+            li {
+
+                text-align: center;
+
+                font-size: 20px;
+            }
+
+            #cu {
+                width: 150px;
+            }
+
+            .navbar-nav {
+
+            }
+        </style>
+    </page>
+    <script>
+        function getQueryString(str, key) {
+            if (str) {
+                var queryString = str.split('?')[1] || '';
+                var arr = queryString.split('&') || [];
+                for (var i = 0; i < arr.length; i++) {
+                    var keyString = decodeURIComponent(arr[i].split('=')[0]);
+                    var valueString = decodeURIComponent(arr[i].split('=')[1]);
+                    if (key === keyString) {
+                        return valueString;
+                    }
+                }
+                return;
+            } else {
+                return;
+            }
+        }
+
+        $(function () {
+ 	
+            $("#GeneA").val(getQueryString(location.search, "geneA"));
+            $("#GeneB").val(getQueryString(location.search, "geneB"));
+            c = getQueryString(location.search, "cancer");
+            $("#select1").find("option:contains(" + c + ")").attr("selected", true);
+            //$("#select1 option[text="+c+"]").prop("selected", true);
+
+            var data1 = []
+            var data2 = []
+            var data3 = []
+            var ctx1 = document.getElementById('Chart1');
+            var Chart1 = echarts.init(ctx1);
+            var option1;
+            var ctx2 = document.getElementById('Chart2');
+            var Chart2 = echarts.init(ctx2);
+            var option2;
+            var ctx3 = document.getElementById('Chart3');
+            var Chart3 = echarts.init(ctx3);
+            var option3;
+            var ctx4 = document.getElementById('Chart4');
+            var Chart4 = echarts.init(ctx4);
+            var option4;
+            var ctx5 = document.getElementById('Chart5');
+            var Chart5 = echarts.init(ctx5);
+            var option5;
+
+            function split_array(arr, len) {
+                var a_len = arr.length;
+                var result = [];
+                for (var i = 0; i < a_len; i += len) {
+                    result.push(arr.slice(i, i + len));
+                }
+                return result;
+            }
+
+            $("#go1").click(function () {
+                geneA = $("#GeneA").val();
+                geneB = $("#GeneB").val();
+                cancer = $("#select1 option:checked").text();
+                /*   aj1=  $.get("searchServlet/search3", {geneA:"MDN1", geneB: "BRCA1",cancer:cancer}, function (d) {
+                         data1=d;
+                     });*/
+                $.ajax({
+                    url: "searchServlet/search4",
+                    data: {geneA: geneA, geneB: geneB, table: cancer},
+                    success: function (d) {
+                        data2 = split_array(d[0], d[0].length / 2);
+                        data3 = split_array(d[1], d[1].length / 2);
+                        data1 = split_array(d[2], d[2].length / 2);
+                        for (i = 0; i < data1[0].length; i++) {
+                            mut1 = data1[0][0]
+                            mut2 = data1[1][0]
+                            logfc1 = data1[0][1]
+                            logfc2 = data1[1][1]
+                            padj1 = data1[0][2]
+                        }
+                        option1 = {
+                            title: {
+                                text: geneA,
+                                subtext: '',
+                                left: 'center'
+                            },
+                            tooltip: {
+                                trigger: 'item'
+                            },
+                            legend: {
+                                orient: 'vertical',
+                                left: 'left'
+                            },
+                            series: [
+                                {
+                                    name: 'Access From',
+                                    type: 'pie',
+                                    radius: '50%',
+                                    data: [
+                                        {value: mut1, name: 'mutation'},
+                                        {value: 1 - mut1, name: 'no mutation'},
+
+                                    ],
+                                    emphasis: {
+                                        itemStyle: {
+                                            shadowBlur: 10,
+                                            shadowOffsetX: 0,
+                                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                        }
+                                    }
+                                }
+                            ]
+                        };
+                        option1 && Chart1.setOption(option1);
+                        option2 = {
+                            title: {
+                                text: geneB,
+                                subtext: '',
+                                left: 'center'
+                            },
+                            tooltip: {
+                                trigger: 'item'
+                            },
+                            legend: {
+                                orient: 'vertical',
+                                left: 'left'
+                            },
+                            series: [
+                                {
+                                    name: 'Access From',
+                                    type: 'pie',
+                                    radius: '50%',
+                                    data: [
+                                        {value: mut2, name: 'mutation'},
+                                        {value: 1 - mut2, name: 'no mutation'},
+
+                                    ],
+                                    emphasis: {
+                                        itemStyle: {
+                                            shadowBlur: 10,
+                                            shadowOffsetX: 0,
+                                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                        }
+                                    }
+                                }
+                            ]
+                        };
+                        option2 && Chart2.setOption(option2);
+                        option3 = {
+                            title: [
+                                {
+                                    text: '',
+                                    left: 'center'
+                                },
+                                {
+                                    text: 'gene0: ' + geneA + '  gene1: ' + geneB,
+
+                                    textStyle: {
+                                        fontWeight: 'normal',
+                                        fontSize: 14,
+                                        lineHeight: 20
+                                    },
+                                    left: '10%',
+                                    top: '90%'
+                                }
+                            ],
+                            dataset: [
+                                {
+                                    source: [data2[0], data2[1]]
+                                },
+
+                                {
+                                    transform: {
+                                        type: 'boxplot',
+                                        config: {itemNameFormatter: 'gene {value}'}
+                                    }
+                                },
+                                {
+                                    fromDatasetIndex: 1,
+                                    fromTransformResult: 1
+                                }
+                            ],
+                            tooltip: {
+                                trigger: 'item',
+                                axisPointer: {
+                                    type: 'shadow'
+                                }
+                            },
+                            grid: {
+                                left: '10%',
+                                right: '10%',
+                                bottom: '15%'
+                            },
+                            xAxis: {
+                                type: 'category',
+                                boundaryGap: true,
+                                nameGap: 30,
+                                splitArea: {
+                                    show: false
+                                },
+                                splitLine: {
+                                    show: false
+                                }
+                            },
+                            yAxis: {
+                                type: 'value',
+
+                                splitArea: {
+                                    show: true
+                                }
+                            },
+                            series: [
+                                {
+                                    name: 'boxplot',
+                                    type: 'boxplot',
+                                    datasetIndex: 1
+                                },
+                                {
+                                    name: 'outlier',
+                                    type: 'scatter',
+                                    datasetIndex: 2
+                                }
+                            ]
+                        };
+                        option3 && Chart3.setOption(option3);
+                        option4 = {
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'shadow'
+                                }
+                            },
+                            grid: {
+                                left: '3%',
+                                right: '4%',
+                                bottom: '3%',
+                                containLabel: true
+                            },
+                            xAxis: [
+                                {
+                                    type: 'category',
+                                    data: [geneA, geneB],
+                                    axisTick: {
+                                        alignWithLabel: true
+                                    }
+                                }
+                            ],
+                            yAxis: [
+                                {
+                                    type: 'value'
+                                }
+                            ],
+                            series: [
+                                {
+                                    name: 'Direct',
+                                    type: 'bar',
+                                    barWidth: '60%',
+                                    data: [logfc1, logfc2]
+                                }
+                            ]
+                        };
+                        option4 && Chart4.setOption(option4);
+                        option5 = {
+                            title: [
+                                {
+                                    text: '',
+                                    left: 'center'
+                                },
+                                {
+                                    text: 'gene0: ' + geneA + '  gene1: ' + geneB,
+
+                                    textStyle: {
+                                        fontWeight: 'normal',
+                                        fontSize: 14,
+                                        lineHeight: 20
+                                    },
+                                    left: '10%',
+                                    top: '90%'
+                                }
+                            ],
+                            dataset: [
+                                {
+                                    source: [data3[0], data3[1]]
+                                },
+
+                                {
+                                    transform: {
+                                        type: 'boxplot',
+                                        config: {itemNameFormatter: 'gene {value}'}
+                                    }
+                                },
+                                {
+                                    fromDatasetIndex: 1,
+                                    fromTransformResult: 1
+                                }
+                            ],
+                            tooltip: {
+                                trigger: 'item',
+                                axisPointer: {
+                                    type: 'shadow'
+                                }
+                            },
+                            grid: {
+                                left: '10%',
+                                right: '10%',
+                                bottom: '15%'
+                            },
+                            xAxis: {
+                                type: 'category',
+                                boundaryGap: true,
+                                nameGap: 30,
+                                splitArea: {
+                                    show: false
+                                },
+                                splitLine: {
+                                    show: false
+                                }
+                            },
+                            yAxis: {
+                                type: 'value',
+
+                                splitArea: {
+                                    show: true
+                                }
+                            },
+                            series: [
+                                {
+                                    name: 'boxplot',
+                                    type: 'boxplot',
+                                    datasetIndex: 1
+                                },
+                                {
+                                    name: 'outlier',
+                                    type: 'scatter',
+                                    datasetIndex: 2
+                                }
+                            ]
+                        };
+                        option5 && Chart5.setOption(option5);
+                        $("#d1").addClass("panel panel-default");
+                        $("#d2").addClass("panel panel-default");
+                        $("#d3").addClass("panel panel-default");
+                        $("#d4").addClass("panel panel-default");
+                        $("#h1").text("Mutation rate")
+                        $("#h2").text("Methylation ")
+                        $("#h3").text("LogFC of differential analysis")
+                        $("#h4").text("Copy Number Variance");
+
+                    },
+                    error: function () {
+                        alert("No result");
+
+                    },
+                    dataType: "json"
+                });
+
+
+            });
+        });
+    </script>
+</head>
+<body>
+<header class="container-fluid">
+    <!--导航栏-->
+    <div class="row" style="height: 50px">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <!-- 定义汉堡按钮 -->
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand " style="margin-left: 50px" href="homepage">SLOAD 2</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+
+
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right" id="">
+                        <li style="margin-left: 20px"><a href="result">Result<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li style="" class="active"><a href="#">Analysis</a></li>
+                        <li style=""><a href="tutorial">Tutorial</a></li>
+                        <li style=""><a href="http://www.tmliang.cn/SL">SLOAD1</a></li>
+                        <li style=" margin-right: 100px"><a href="contact">Contact Us</a></li>
+                    </ul>
+
+
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+
+    </div>
+
+
+</header>
+<!--search-->
+<div class="container" style="padding-top: 50px">
+    <div class="col-sm-12">
+
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade active in panel panel-default" id="single">
+                <div class="panel-body" style="margin-top: 0;height: 220px">
+                    <div class="col-sm-12">
+                        <form method="get" class="form-horizontal">
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <h4>Analysis of a SL-pair</h4>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="col-sm-12">
+                                        <span class="help-block">Please choose a cancer type and input the gene symbol</span>
+                                    </div>
+
+                                    <div class="col-sm-2" style="text-align: right;padding-top: 6px"> Cancer type</div>
+                                    <div class="col-sm-2" style="padding-left: 0px">
+                                        <select class="form-control" id="select1" style="width: 150px">
+                                            <option>ACC</option>
+                                            <option>BLCA</option>
+                                            <option>BRCA</option>
+                                            <option>CESC</option>
+                                            <option>CHOL</option>
+                                            <option>COAD</option>
+                                            <option>DLBC</option>
+                                            <option>ESCA</option>
+                                            <option>GBM</option>
+                                            <option>HNSC</option>
+                                            <option>KICH</option>
+                                            <option>KIRC</option>
+                                            <option>KIRP</option>
+                                            <option>LAML</option>
+                                            <option>LGG</option>
+                                            <option>LIHC</option>
+                                            <option>LUAD</option>
+                                            <option>LUSC</option>
+                                            <option>OV</option>
+                                            <option>PAAD</option>
+                                            <option>PCPG</option>
+                                            <option>PRAD</option>
+                                            <option>READ</option>
+                                            <option>SARC</option>
+                                            <option>SKCM</option>
+                                            <option>STAD</option>
+                                            <option>TGCT</option>
+                                            <option>THCA</option>
+                                            <option>THYM</option>
+                                            <option>UCEC</option>
+                                            <option>UCS</option>
+
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-2" style="text-align: right;padding-top: 6px"> GeneA</div>
+                                    <div class="col-sm-2" style="padding-left: 0px">
+                                        <input type="text" style="display:none">
+                                        <input class="form-control" type="text" id="GeneA" name="gene"
+                                                autofocus="" autocomplete="off">
+                                        <div class="autocomplete"
+                                             style="display: none; position: relative; left: 15px; top: 0px;"></div>
+                                    </div>
+                                    <div class="col-sm-2" style="text-align: right;padding-top: 6px"> GeneB</div>
+                                    <div class="col-sm-2" style="padding-left: 0px">
+                                        <input type="text" style="display:none">
+                                        <input class="form-control" type="text" id="GeneB" name="gene"
+                                               autofocus="" autocomplete="off">
+                                        <div class="autocomplete"
+                                             style="display: none; position: relative; left: 15px; top: 0px;"></div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-12" style="padding-left: 400px;margin-top: 50px">
+                                <button type="button" class="btn btn-primary" id="go1" style="width: 100px">Go!</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<!--图表-->
+<div class="container">
+    <h4 id="h1"></h4>
+    <div id="d1" class="col-sm-12">
+        <div class="col-sm-6">
+            <div id="Chart1" style="width: 600px;height:400px;">
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div id="Chart2" style="width: 600px;height:400px;">
+            </div>
+        </div>
+
+
+    </div>
+    <h4 id="h2"></h4>
+    <div id="d2" class="col-sm-12" align="center">
+        <div id="Chart3" style="width: 600px;height:400px;"></div>
+
+
+    </div>
+    <h4 id="h3"></h4>
+    <div id="d3" class="col-sm-12" align="center">
+        <div id="Chart4" style="width: 600px;height:400px;">
+
+        </div>
+    </div>
+    <h4 id="h4"></h4>
+    <div id="d4" class="col-sm-12" align="center">
+        <div id="Chart5" style="width:600px;height:400px;">
+        </div>
+    </div>
+
+</div>
+</body>
+<script src="js/echarts.min.js"></script>
+</html>

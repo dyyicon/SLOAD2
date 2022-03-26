@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>result</title>
+    <!-- Bootstrap -->
+    <page>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="js/jquery-3.2.1.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="js/bootstrap.min.js"></script>
+        <script>
+            function getQueryString(str, key) {
+                if (str) {
+                    var queryString = str.split('?')[1] || '';
+                    var arr = queryString.split('&') || [];
+                    for (var i = 0; i < arr.length; i++) {
+                        var keyString = decodeURIComponent(arr[i].split('=')[0]);
+                        var valueString = decodeURIComponent(arr[i].split('=')[1]);
+                        if (key === keyString) {
+                            return valueString;
+                        }
+                    }
+                    return;
+                } else {
+                    return;
+                }
+            }
+
+            $(function () {
+
+
+                if (getQueryString(location.search, "way") == null) {
+                    $("#title").html("Please search on homepage");
+                } else if (getQueryString(location.search, "way").toString() == "1") {
+                    $("#abutton").click(function () {
+                        if ($("input:radio:checked").parent().next().html() == undefined) {
+                            alert("please choose the SL pair you are interested in")
+                        } else {
+                            window.location.href = "analysis?" + "geneA=" + $("input:radio:checked").parent().next().next().html() + "&geneB=" + $("input:radio:checked").parent().next().next().next().html() + "&cancer=" + cancer;
+                        }
+
+                    });
+                    name = getQueryString(location.search, "name");
+                    cancer = getQueryString(location.search, "cancer");
+                    $("#title").html("SL-pairs of " + name + " in " + cancer);
+                    $("#tbody").html("LOADING...")
+                    $.get("searchServlet/search1", {name: name, cancer: cancer}, function (data) {
+                        lis = "  <tr class=\"success\">\n" +
+                            "            <th width=3% > </th>\n" +
+                            "            <th width=5%>ID</th>\n" +
+                            "            <th width=8%>GeneA</th>\n" +
+                            "            <th width=8%>GeneB</th>\n" +
+                            "            <th width=10%>Category</th>\n" +
+                            "            <th width=8%>Amount</th>\n" +
+                            "            <th style='text-align: center'>Cancer types</th>\n" +
+                            "\n" +
+                            "        </tr>\n"
+                        if (data.length > 0) {
+                            for (i = 0; i < data.length; i++) {
+                               y= data[i].yz==0?"predicted":"verified"
+                                lis += " <tr>" +
+                                    "<td><input name='1' type='radio' ></td>" +
+                                    " <td>" + (i + 1) + "</td>" +
+                                    " <td>" + data[i].geneA + "</td>" +
+                                    " <td>" + data[i].geneB + "</td>" +
+                                    " <td>" + y+ "</td>" +
+                                    " <td>" + data[i].num + "</td>" +
+                                    "  <td>" + data[i].f1 + "</td>" +
+                                    "  </tr>"
+                            }
+                            $("#tbody").html(lis)
+                        } else {
+                            $("#tbody").html("No result")
+                        }
+
+                    });
+                } else {
+                    $("#abutton").click(function () {
+                        if ($("input:radio:checked").parent().next().html() == undefined) {
+                            alert("please choose the SL pair you are interested in")
+                        } else {
+                            window.location.href = "analysis.html?" + "geneA=" + $("input:radio:checked").parent().next().next().html() + "&geneB=" + $("input:radio:checked").parent().next().next().next().html();
+                        }
+                    });
+                    $("#abutton").attr("href", "#slp2")
+                    geneA = getQueryString(location.search, "geneA");
+                    geneB = getQueryString(location.search, "geneB");
+                    $("#title").html("Result");
+                    $("#tbody").html("LOADING...")
+                    $.get("searchServlet/search2", {geneA: geneA, geneB: geneB}, function (data) {
+                        lis = "  <tr class=\"success\">\n" +
+                            "            <th width=3%> </th>\n" +
+                            "            <th width=5%>ID</th>\n" +
+                            "            <th width=8%>GeneA</th>\n" +
+                            "            <th width=8%>GeneB</th>\n" +
+                            "            <th width=10%>Category</th>\n" +
+                            "            <th width=8%>Amount</th>\n" +
+                            "            <th style='text-align: center'>Cancer types</th>\n" +
+                            "\n" +
+                            "        </tr>\n"
+
+                        if (data.length > 0) {
+                            for (i = 0; i < data.length; i++) {
+                                 y = data[i].yz == 0 ? "predicted" : "verified";
+                                lis += " <tr>" +
+                                    "<td><input name='1' type='radio' ></td>" +
+                                    " <td>" + (i + 1) + "</td>" +
+                                    " <td>" + data[i].geneA + "</td>" +
+                                    " <td>" + data[i].geneB + "</td>" +
+                                    " <td>" + y + "</td>" +
+                                    " <td>" + data[i].num + "</td>" +
+                                    "  <td>" + data[i].f1 + "</td>" +
+                                    "  </tr>"
+                            }
+                            $("#tbody").html(lis)
+                        } else {
+                            $("#tbody").html("No result")
+                        }
+                    });
+                }
+            });
+        </script>
+        <style>
+            #search-text {
+                width: 130px;
+            }
+
+            li {
+                text-align: center;
+                font-size: 20px;
+            }
+
+            #cu {
+                width: 150px;
+            }
+        </style>
+    </page>
+</head>
+<body>
+<!--头部-->
+<header class="container-fluid">
+    <!--导航栏-->
+    <div class="row" style="height: 50px">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <!-- 定义汉堡按钮 -->
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand " style="margin-left: 50px" href="homepage">SLOAD 2</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav"></ul>
+                    <ul class="nav navbar-nav navbar-right" id="">
+                        <li style="margin-left: 20px" CLASS="active"><a href="#">Result<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li style=""><a href="analysis">Analysis</a></li>
+                        <li style=""><a href="tutorial">Tutorial</a></li>
+                        <li style=""><a href="http://www.tmliang.cn/SL">SLOAD1</a></li>
+                        <li style=" margin-right: 100px"><a href="contact">Contact Us</a></li>
+                    </ul>
+
+
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+
+    </div>
+
+
+</header>
+
+
+<div class="container" style="margin-top: 10px">
+
+    <a class="btn btn-info" id="abutton" role="button" data-toggle="collapse" aria-expanded="false"
+       aria-controls="collapseExample" style="margin-left: 930px">
+        Click here to analyse SL-pair
+    </a>
+
+
+</div>
+
+
+<div style="height:50px"></div>
+
+<!--表格-->
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h3 style="text-align: center" id="title"></h3></div>
+        <div class="panel-body">
+            <form>
+                <table border="1" class="table table-bordered table-hover" style="table-layer:fixed;word-break:break-word; ">
+                    <tbody id="tbody">
+
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+
+
+</div>
+<!--页脚-->
+<!--
+<div style="width: 100%;height:10px;border-bottom : dashed 1px;border-bottom-color: #8c8c8c ;margin-top: 200px">
+
+</div>
+<div class="row">
+    <div class="col-sm-12 " style="text-align: right">
+        <p>Copyright © 2021 dyy . <a target="_blank" href=""></a>All Rights Reserved.</p>
+    </div>
+</div>-->
+
+</body>
+</html>
