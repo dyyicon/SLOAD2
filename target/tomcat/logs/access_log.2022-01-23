@@ -1,0 +1,14 @@
+0:0:0:0:0:0:0:1 - - [23/Jan/2022:09:51:46 +0800] "GET / HTTP/1.1" 200 17501 http-bio-80-exec-2 47
+0:0:0:0:0:0:0:1 - - [23/Jan/2022:09:51:46 +0800] "GET /img/sl.jpg HTTP/1.1" 200 48922 http-bio-80-exec-5 48
+0:0:0:0:0:0:0:1 - - [23/Jan/2022:09:51:46 +0800] "GET /css/bootstrap.min.css HTTP/1.1" 200 121200 http-bio-80-exec-3 80
+0:0:0:0:0:0:0:1 - - [23/Jan/2022:09:51:46 +0800] "GET /js/jquery-ui.min.js HTTP/1.1" 200 254916 http-bio-80-exec-1 84
+0:0:0:0:0:0:0:1 - - [23/Jan/2022:09:51:46 +0800] "GET /js/bootstrap.min.js HTTP/1.1" 200 37045 http-bio-80-exec-4 47
+0:0:0:0:0:0:0:1 - - [23/Jan/2022:09:51:46 +0800] "GET /img/inc2.jpg HTTP/1.1" 200 85180 http-bio-80-exec-6 112
+0:0:0:0:0:0:0:1 - - [23/Jan/2022:09:51:46 +0800] "GET /img/d11.jpg HTTP/1.1" 200 71817 http-bio-80-exec-6 6
+0:0:0:0:0:0:0:1 - - [23/Jan/2022:09:51:46 +0800] "GET /img/d12.jpg HTTP/1.1" 200 75303 http-bio-80-exec-6 6
+0:0:0:0:0:0:0:1 - - [23/Jan/2022:09:51:46 +0800] "GET /img/d13.jpg HTTP/1.1" 200 43951 http-bio-80-exec-9 5
+0:0:0:0:0:0:0:1 - - [23/Jan/2022:09:51:47 +0800] "GET /fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028 http-bio-80-exec-6 11
+0:0:0:0:0:0:0:1 - - [23/Jan/2022:09:51:48 +0800] "GET /favicon.ico HTTP/1.1" 404 973 http-bio-80-exec-6 2
+0:0:0:0:0:0:0:1 - - [23/Jan/2022:09:51:53 +0800] "GET /result?name=MDN1&cancer=ACC&way=1 HTTP/1.1" 200 10442 http-bio-80-exec-6 7
+0:0:0:0:0:0:0:1 - - [23/Jan/2022:09:51:53 +0800] "GET /js/jquery-3.2.1.min.js HTTP/1.1" 200 86659 http-bio-80-exec-6 48
+0:0:0:0:0:0:0:1 - - [23/Jan/2022:09:51:57 +0800] "GET /searchServlet/search1?name=MDN1&cancer=ACC HTTP/1.1" 200 23088 http-bio-80-exec-6 3223
